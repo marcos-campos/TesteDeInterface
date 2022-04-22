@@ -12,13 +12,10 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import br.com.alura.leilao.api.retrofit.client.LeilaoWebClient;
+import br.com.alura.leilao.api.retrofit.client.TestWebClient;
 import br.com.alura.leilao.model.Leilao;
 
-import static org.junit.Assert.*;
-
 public class ListaLeilaoTelaTest {
-
 
     @Rule
     public ActivityTestRule activity =
@@ -26,7 +23,8 @@ public class ListaLeilaoTelaTest {
 
     @Test
     public void deve_AparecerUmLeilao_QuandoCarregarUmLeilaoNaApi() throws IOException {
-        LeilaoWebClient webClient = new LeilaoWebClient();
+
+        TestWebClient webClient = new TestWebClient();
 
         boolean bancoDeDadosNaoFoiLimpo = !webClient.limpaBancoDeDados();
 
@@ -44,5 +42,32 @@ public class ListaLeilaoTelaTest {
         Espresso.onView(ViewMatchers.withText("Carro"))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
+
+    @Test
+    public void deve_AparecerDoisLeiloes_QuandoCarregarDoisLeiloesNaApi() throws IOException {
+
+        TestWebClient webClient = new TestWebClient();
+
+        boolean bancoDeDadosNaoFoiLimpo = !webClient.limpaBancoDeDados();
+
+        if (bancoDeDadosNaoFoiLimpo){
+            Assert.fail("Banco de dados não foi limpo");
+        }
+
+        Leilao carroSalvo = webClient.salva(new Leilao("Carro"));
+        Leilao computadorSalvo = webClient.salva(new Leilao("Computador"));
+        if (carroSalvo == null || computadorSalvo == null){
+            Assert.fail("Leilão não foi salvo");
+        }
+
+        activity.launchActivity(new Intent());
+
+        Espresso.onView(ViewMatchers.withText("Carro"))
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+
+        Espresso.onView(ViewMatchers.withText("Computador"))
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+    }
+
 
 }
