@@ -14,8 +14,12 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import br.com.alura.leilao.R;
 import br.com.alura.leilao.api.retrofit.client.TestWebClient;
 import br.com.alura.leilao.model.Leilao;
+
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.core.AllOf.allOf;
 
 public class ListaLeilaoTelaTest {
 
@@ -35,7 +39,8 @@ public class ListaLeilaoTelaTest {
 
         activity.launchActivity(new Intent());
 
-        Espresso.onView(ViewMatchers.withText("Carro"))
+        Espresso.onView(allOf(ViewMatchers.withText("Carro"),
+                withId(R.id.item_leilao_descricao)))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
 
@@ -45,10 +50,12 @@ public class ListaLeilaoTelaTest {
 
         activity.launchActivity(new Intent());
 
-        Espresso.onView(ViewMatchers.withText("Carro"))
+        Espresso.onView(allOf(ViewMatchers.withText("Carro"),
+                withId(R.id.item_leilao_descricao)))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
 
-        Espresso.onView(ViewMatchers.withText("Computador"))
+        Espresso.onView(allOf(ViewMatchers.withText("Computador"),
+                withId(R.id.item_leilao_descricao)))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
 
